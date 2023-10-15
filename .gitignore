@@ -1,6 +1,6 @@
 # User Defined
 image-gen-venv/
-image-gen/json-responses/
+image-gen/json_responses/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
