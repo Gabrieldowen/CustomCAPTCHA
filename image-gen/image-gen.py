@@ -6,10 +6,13 @@ from pathlib import Path
 import random
 import sys
 
+
 # ----- Global Variables -----
 
 # List of objects that will appear in the images
+# Objects 1
 objects = ["a car", "a dog", "a rocket", "a t-rex"]
+
 # List of backgrounds for the images
 backgrounds = ["the ocean", "outer space", "a rainforest", "a city"]
 # List of different styles
@@ -18,13 +21,13 @@ styles = ["historic", "surreal"]
 # The environment variable for the OpenAI api key stored on local machine (On POSIX, use `export OPENAI_API_KEY="<your-key-value-here>"`)
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
+
 # ----- Functions -----
 
 # Decode the base64 string from a json file to a png
 def decode(response, is_multi, args):
     # Make the first part of the image's filename the values of the arguments
-    temp = args[2:-1]   # Get the objects, ignore the other args
-    filename = ''.join(str(x) for x in temp)
+    filename = ''.join(str(x) for x in args)
 
     # is_multi indicates whether it is a multi object image or not
     # If it is multi object, save it to a 'multi' subdirectory
@@ -47,7 +50,7 @@ def decode(response, is_multi, args):
 # Generate images with three objects in them
 def generate_multiobj(args):
     # The prompt for the image generation
-    PROMPT = f"A {styles[args[1]]} image containing {objects[args[2]]}, {objects[args[3]]}, and {objects[args[4]]} located in {backgrounds[args[5]]}."
+    PROMPT = f"A {styles[random.choice(styles)]} image containing {objects[args[1]]}, {objects[args[2]]}, and {objects[args[3]]} located in {backgrounds[random.choice(backgrounds)]}."
 
     # Loop to generate num_iter number of images
     for i in range(0, args[0]):
@@ -59,12 +62,12 @@ def generate_multiobj(args):
             response_format = "b64_json",
         )
         # Decode the json response and save as a png file (with flag for `multi` set to True)
-        decode(response, True, args)
+        decode(response, True, args[1:])
 
 # Generate images with only one object
 def generate_singleobj(args):
     # The prompt for the image generation
-    PROMPT = f"A {styles[args[1]]} image containing {objects[args[2]]} located in {backgrounds[args[3]]}."
+    PROMPT = f"A {styles[random.choice(styles)]} image containing {objects[args[1]]} located in {backgrounds[random.choice(backgrounds)]}."
 
     # Loop to generate num_iter number of images
     for i in range(0, args[0]):
@@ -76,54 +79,54 @@ def generate_singleobj(args):
             response_format = "b64_json",
         )
         # Decode the json response and save as a png file (with flag for `multi` set to False)
-        decode(response, False, args)
+        decode(response, False, args[1:])
 
 # Generate images for all objects, styles, backgrounds\
 # This is the most painfully inefficient function in history :(
 def generate_all(func, args):
     # Generate all combinations of multi object images
     if func == "all_multi":
-        for style in styles:
+        for x in range(0, args[0]):
             for idx1, obj1 in enumerate(objects):
-                for idx2, obj2 in enumerate(objects):
-                    for idx3, obj3 in enumerate(objects):
-                        for x in range(0, args[0]):
-                            if obj1 != obj2 and obj1 != obj3 and obj2 != obj3:
-                                PROMPT = f"A {style} image containing {obj1}, {obj2}, and {obj3} located in {random.choice(backgrounds)}."
+                for (idx2, obj2) in list(enumerate(objects))[idx1:]:    # Start at element idx1
+                    for (idx3, obj3) in list(enumerate(objects))[idx2:]:    # Start at element idx2
+                        if obj1 != obj2 and obj1 != obj3 and obj2 != obj3:
+                            PROMPT = f"A {random.choice(styles)} image containing {obj1}, {obj2}, and {obj3} located in {random.choice(backgrounds)}."
 
-                                # Loop to generate num_iter number of images
-                                for i in range(0, args[0]):
-                                    # The json response for the generated image
-                                    response = openai.Image.create(
-                                        prompt=PROMPT,
-                                        n=1,
-                                        size="256x256",
-                                        response_format = "b64_json",
-                                    )
-                                    name = [0, 0, idx1, idx2, idx3, 0]
-                                    # Decode the json response and save as a png file (with flag for `multi` set to False)
-                                    decode(response, True, name)
+                            # Loop to generate num_iter number of images
+                            for i in range(0, args[0]):
+                                # The json response for the generated image
+                                response = openai.Image.create(
+                                    prompt=PROMPT,
+                                    n=1,
+                                    size="256x256",
+                                    response_format = "b64_json",
+                                )
+                                name = [idx1, idx2, idx3]
+                                # Decode the json response and save as a png file (with flag for `multi` set to False)
+                                decode(response, True, name)
     # Generate all combinations of single object images
     elif func == "all_single":
-        for style in styles:
-            for idx, obj in enumerate(objects):
-                for x in range(0, args[0]):
-                    PROMPT = f"A {style} image containing {obj} located in {random.choice(backgrounds)}."
+        for x in range(0, args[0]):
+            for (idx, obj) in enumerate(objects):
+                PROMPT = f"A {random.choice(styles)} image containing {obj} located in {random.choice(backgrounds)}."
 
-                    # Loop to generate num_iter number of images
-                    for i in range(0, args[0]):
-                        # The json response for the generated image
-                        response = openai.Image.create(
-                            prompt=PROMPT,
-                            n=1,
-                            size="256x256",
-                            response_format = "b64_json",
-                        )
-                        name = [0, 0, idx, 0]
-                        # Decode the json response and save as a png file (with flag for `multi` set to False)
-                        decode(response, False, name)
+                # Loop to generate num_iter number of images
+                for i in range(0, args[0]):
+                    # The json response for the generated image
+                    response = openai.Image.create(
+                        prompt=PROMPT,
+                        n=1,
+                        size="256x256",
+                        response_format = "b64_json",
+                    )
+                    name = [idx]
+                    # Decode the json response and save as a png file (with flag for `multi` set to False)
+                    decode(response, False, name)
 
-# The main driver function
+
+# ---- Main driver function -----
+
 def main():
     # Get runtime arguments
     func = sys.argv[1]  # Specify which function to use
