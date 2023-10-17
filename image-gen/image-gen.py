@@ -50,7 +50,7 @@ def decode(response, is_multi, args):
 # Generate images with three objects in them
 def generate_multiobj(args):
     # The prompt for the image generation
-    PROMPT = f"A {styles[random.choice(styles)]} image containing {objects[args[1]]}, {objects[args[2]]}, and {objects[args[3]]} located in {backgrounds[random.choice(backgrounds)]}."
+    PROMPT = f"A {random.choice(styles)} image containing {objects[args[1]]}, {objects[args[2]]}, and {objects[args[3]]} located in {random.choice(backgrounds)}."
 
     # Loop to generate num_iter number of images
     for i in range(0, args[0]):
@@ -67,7 +67,7 @@ def generate_multiobj(args):
 # Generate images with only one object
 def generate_singleobj(args):
     # The prompt for the image generation
-    PROMPT = f"A {styles[random.choice(styles)]} image containing {objects[args[1]]} located in {backgrounds[random.choice(backgrounds)]}."
+    PROMPT = f"A {random.choice(styles)} image containing {objects[args[1]]} located in {random.choice(backgrounds)}."
 
     # Loop to generate num_iter number of images
     for i in range(0, args[0]):
