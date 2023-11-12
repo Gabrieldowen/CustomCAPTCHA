@@ -8,6 +8,25 @@
 
     </head>
     <body>
+        <script>
+            function toggleBg(element, color) {
+              if(element.style.backgroundColor == color) {
+                color = element.dataset.normalColor;
+              } else {
+                element.dataset.normalColor = element.style.backgroundColor;
+              }
+          
+              element.style.backgroundColor = color;
+            }
+            function toggleCheck() {
+                for(var i = 0; i < 9; i++){
+                    var checkTest = document.getElementById("b" + i + "").style.backgroundColor;
+                    if(checkTest == 'yellow'){
+                        document.getElementById("ta1").textContent("b" + i + " is selected");
+                    }
+                }
+            }
+          </script>
         <div class="page-header bg-dark">
            <h2 class="text-light">
               dgsCAPTCHA
@@ -18,63 +37,63 @@
             <h3 class="d-flex justify-content-center">dgsCAPTCHA GRID:</h3>
         </div>
 
-        <table class="table table-bordered d-flex justify-content-center" style="height: 100%; width: 100%; object-fit: contain;">
+        <table class="table table-bordered d-flex justify-content-center" style="height: 100%; width: 100%; object-fit: contain;" border="1">
             <tbody>
         <tr>
-            <td class="p-2 bd-highlight">
-                <button type="button" style="width: 128px; height: 128px;">
+            <td class="p-2 bd-highlight" align="center">
+                <button id="b1" type="button" style="width: 128px; height: 128px;" onclick="toggleBg(this,'yellow')">
+                    <img style= "height: 100%; width: 100%; object-fit: contain;" 
+                    src="https://th.bing.com/th/id/OIP.YldCV11s9ONgsXksVGO2jAHaEo?pid=ImgDet&rs=1" alt="Place Holder" />
+                </button>
+            </td>
+            <td class="p-2 bd-highlight" align="center">
+                <button id="b2" type="button" style="width: 128px; height: 128px;" onclick="toggleBg(this,'yellow')">
                     <img style= "height: 100%; width: 100%; object-fit: contain;" 
                     src="https://th.bing.com/th/id/R.29914fdaf3c342e7692c64702080f87f?rik=3c9CKHVlVBi0vQ&riu=http%3a%2f%2f1.bp.blogspot.com%2f-zxhc-2_BO6U%2fT-Bc0zMJ7iI%2fAAAAAAAADGg%2fvvoYHLKDPDA%2fs1600%2f889.jpg&ehk=dKZHWQAaVjhf27PP8yvc1tlNZgELxtjf0i%2bmJcGiKH8%3d&risl=&pid=ImgRaw&r=0" alt="Place Holder" />
                 </button>
             </td>
-            <td class="p-2 bd-highlight">
-                <button type="button" style="width: 128px; height: 128px;">
-                    <img style= "height: 100%; width: 100%; object-fit: contain;" 
-                    src="https://th.bing.com/th/id/R.29914fdaf3c342e7692c64702080f87f?rik=3c9CKHVlVBi0vQ&riu=http%3a%2f%2f1.bp.blogspot.com%2f-zxhc-2_BO6U%2fT-Bc0zMJ7iI%2fAAAAAAAADGg%2fvvoYHLKDPDA%2fs1600%2f889.jpg&ehk=dKZHWQAaVjhf27PP8yvc1tlNZgELxtjf0i%2bmJcGiKH8%3d&risl=&pid=ImgRaw&r=0" alt="Place Holder" />
-                </button>
-            </td>
-            <td class="p-2 bd-highlight">
-                <button type="button" style="width: 128px; height: 128px;">
+            <td class="p-2 bd-highlight" align="center">
+                <button id="b3" type="button" style="width: 128px; height: 128px;" onclick="toggleBg(this,'yellow')">
                     <img style= "height: 100%; width: 100%; object-fit: contain;" 
                     src="https://th.bing.com/th/id/R.29914fdaf3c342e7692c64702080f87f?rik=3c9CKHVlVBi0vQ&riu=http%3a%2f%2f1.bp.blogspot.com%2f-zxhc-2_BO6U%2fT-Bc0zMJ7iI%2fAAAAAAAADGg%2fvvoYHLKDPDA%2fs1600%2f889.jpg&ehk=dKZHWQAaVjhf27PP8yvc1tlNZgELxtjf0i%2bmJcGiKH8%3d&risl=&pid=ImgRaw&r=0" alt="Place Holder" />
                 </button>
             </td>
         </tr>
         <tr>
-            <td class="p-2 bd-highlight">
-                <button type="button" style="width: 128px; height: 128px;">
+            <td class="p-2 bd-highlight" align="center">
+                <button id="b4" type="button" style="width: 128px; height: 128px;" onclick="toggleBg(this,'yellow')">
                     <img style= "height: 100%; width: 100%; object-fit: contain;" 
                     src="https://th.bing.com/th/id/R.29914fdaf3c342e7692c64702080f87f?rik=3c9CKHVlVBi0vQ&riu=http%3a%2f%2f1.bp.blogspot.com%2f-zxhc-2_BO6U%2fT-Bc0zMJ7iI%2fAAAAAAAADGg%2fvvoYHLKDPDA%2fs1600%2f889.jpg&ehk=dKZHWQAaVjhf27PP8yvc1tlNZgELxtjf0i%2bmJcGiKH8%3d&risl=&pid=ImgRaw&r=0" alt="Place Holder" />
                 </button>
             </td>
-            <td class="p-2 bd-highlight">
-                <button type="button" style="width: 128px; height: 128px;">
+            <td class="p-2 bd-highlight" align="center">
+                <button id="b5" type="button" style="width: 128px; height: 128px;" onclick="toggleBg(this,'yellow')">
                     <img style= "height: 100%; width: 100%; object-fit: contain;" 
                     src="https://th.bing.com/th/id/R.29914fdaf3c342e7692c64702080f87f?rik=3c9CKHVlVBi0vQ&riu=http%3a%2f%2f1.bp.blogspot.com%2f-zxhc-2_BO6U%2fT-Bc0zMJ7iI%2fAAAAAAAADGg%2fvvoYHLKDPDA%2fs1600%2f889.jpg&ehk=dKZHWQAaVjhf27PP8yvc1tlNZgELxtjf0i%2bmJcGiKH8%3d&risl=&pid=ImgRaw&r=0" alt="Place Holder" />
                 </button>
             </td>
-            <td class="p-2 bd-highlight">
-                <button type="button" style="width: 128px; height: 128px;">
+            <td class="p-2 bd-highlight" align="center">
+                <button id="b6" type="button" style="width: 128px; height: 128px;" onclick="toggleBg(this,'yellow')">
                     <img style= "height: 100%; width: 100%; object-fit: contain;" 
                     src="https://th.bing.com/th/id/R.29914fdaf3c342e7692c64702080f87f?rik=3c9CKHVlVBi0vQ&riu=http%3a%2f%2f1.bp.blogspot.com%2f-zxhc-2_BO6U%2fT-Bc0zMJ7iI%2fAAAAAAAADGg%2fvvoYHLKDPDA%2fs1600%2f889.jpg&ehk=dKZHWQAaVjhf27PP8yvc1tlNZgELxtjf0i%2bmJcGiKH8%3d&risl=&pid=ImgRaw&r=0" alt="Place Holder" />
                 </button>
             </td>
         </tr>
             <tr>
-            <td class="p-2 bd-highlight">
-                <button type="button" style="width: 128px; height: 128px;">
+            <td class="p-2 bd-highlight" align="center">
+                <button id="b7" type="button" style="width: 128px; height: 128px;" onclick="toggleBg(this,'yellow')">
                     <img style= "height: 100%; width: 100%; object-fit: contain;" 
                     src="https://th.bing.com/th/id/R.29914fdaf3c342e7692c64702080f87f?rik=3c9CKHVlVBi0vQ&riu=http%3a%2f%2f1.bp.blogspot.com%2f-zxhc-2_BO6U%2fT-Bc0zMJ7iI%2fAAAAAAAADGg%2fvvoYHLKDPDA%2fs1600%2f889.jpg&ehk=dKZHWQAaVjhf27PP8yvc1tlNZgELxtjf0i%2bmJcGiKH8%3d&risl=&pid=ImgRaw&r=0" alt="Place Holder" />
                 </button>
             </td>
-            <td class="p-2 bd-highlight">
-                <button type="button" style="width: 128px; height: 128px;">
+            <td class="p-2 bd-highlight" align="center">
+                <button id="b8" type="button" style="width: 128px; height: 128px;" onclick="toggleBg(this,'yellow')">
                     <img style= "height: 100%; width: 100%; object-fit: contain;" 
                     src="https://th.bing.com/th/id/R.29914fdaf3c342e7692c64702080f87f?rik=3c9CKHVlVBi0vQ&riu=http%3a%2f%2f1.bp.blogspot.com%2f-zxhc-2_BO6U%2fT-Bc0zMJ7iI%2fAAAAAAAADGg%2fvvoYHLKDPDA%2fs1600%2f889.jpg&ehk=dKZHWQAaVjhf27PP8yvc1tlNZgELxtjf0i%2bmJcGiKH8%3d&risl=&pid=ImgRaw&r=0" alt="Place Holder" />
                 </button>
             </td>
-            <td class="p-2 bd-highlight">
-                <button type="button" style="width: 128px; height: 128px;">
+            <td class="p-2 bd-highlight" align="center">
+                <button id="b9" type="checkbox" style="width: 128px; height: 128px;" onclick="toggleBg(this,'yellow')">
                     <img style= "height: 100%; width: 100%; object-fit: contain;" 
                     src="https://th.bing.com/th/id/R.29914fdaf3c342e7692c64702080f87f?rik=3c9CKHVlVBi0vQ&riu=http%3a%2f%2f1.bp.blogspot.com%2f-zxhc-2_BO6U%2fT-Bc0zMJ7iI%2fAAAAAAAADGg%2fvvoYHLKDPDA%2fs1600%2f889.jpg&ehk=dKZHWQAaVjhf27PP8yvc1tlNZgELxtjf0i%2bmJcGiKH8%3d&risl=&pid=ImgRaw&r=0" alt="Place Holder" />
                 </button>
@@ -82,6 +101,8 @@
         </tr>
             </tbody>
         </table>
+        <button style="margin-left: 48%;" onclick="toggleCheck()">Check</button>
+        <textarea id="ta1"></textarea>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     </body>
 </html>
