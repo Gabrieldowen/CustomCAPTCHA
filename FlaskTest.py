@@ -21,7 +21,7 @@ def home():
     if not captcha_code:
         return 'Not enough captcha images found.'
 
-    return render_template('sandbox.html', captcha_code=captcha_code, selected_images=selected_images,
+    return render_template('index.html', captcha_code=captcha_code, selected_images=selected_images,
                            correct_index=correct_index)
 
 @app.route('/validate', methods=['POST'])
@@ -31,12 +31,12 @@ def validate():
     pass
 
 def generate_captcha():
-    image_files = [f for f in os.listdir('static/SixImageTest') if f.endswith('.png')]
-    if len(image_files) < 6:
+    image_files = [f for f in os.listdir('static/NineImageTest') if f.endswith('.png')]
+    if len(image_files) < 9:
         return None
 
-    selected_images = random.sample(image_files, 6)
-    correct_index = random.randint(0, 5)
+    selected_images = random.sample(image_files, 9)
+    correct_index = random.randint(0, 8)
     correct_image = selected_images[correct_index]
     code = os.path.splitext(correct_image)[0]
     return code, selected_images, correct_index
