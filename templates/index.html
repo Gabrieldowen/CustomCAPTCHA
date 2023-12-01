@@ -1,108 +1,123 @@
 <!doctype html>
-<html lang="en">
+<html lang="en">        <!-- HTML coding language is set to be English -->
     <head>
-        <meta charset="utf-8">
+        <meta charset="utf-8">      <!-- Binary set to UTF-8 format -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>CS-4173 project dgsCAPTCHA</title>
           <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
     </head>
     <body>
-        <script>
-            function toggleBg(element, color) {
-              if(element.style.backgroundColor == color) {
+        <script>    //Start of JavaScript code
+            function toggleBg(element, color) {                     //Function to tell if a button has been clicked
+              if(element.style.backgroundColor == color) {          //If statement to deselect button if already selected
                 color = element.dataset.normalColor;
-              } else {
+              } else {                                              //Else statement to select color if not already selected
                 element.dataset.normalColor = element.style.backgroundColor;
               }
           
-              element.style.backgroundColor = color;
+              element.style.backgroundColor = color;                //Assign new value to color at the end to allow for re-use
             }
             function toggleCheck() {
-                for(var i = 0; i < 9; i++){
-                    var checkTest = document.getElementById("b" + i + "").style.backgroundColor;
-                    if(checkTest == 'yellow'){
-                        document.getElementById("ta1").textContent("b" + i + " is selected");
+                const buttonsSelected = Array(9).fill("0");         //Array to tell which buttons are selected
+
+                for(var i = 0; i < buttonsSelected.length; i++){    //Loop to tell which buttons are selected
+                    if(document.getElementById("b" + [i + 1]).style.backgroundColor == 'yellow'){   //If button is selected (yellow in color),
+                        buttonsSelected[i] = "1";                                                   //change array value to one
+                    }
+                    else{                                           //If button is not clicked or unclicked, change array value to zero
+                        buttonsSelected[i] = "0";
                     }
                 }
+                
+                document.getElementById("op1").innerHTML = "Selected Values: " + buttonsSelected;   //Output which buttons are selected
+                
+                /* For testing individual buttons (b1 - b9)
+                if(document.getElementById("b1").style.backgroundColor == 'yellow'){
+                    buttonsSelected[8] = "1";
+                }
+                else {
+                    buttonsSelected[8] = "0";
+                }
+                */
             }
           </script>
         <div class="page-header bg-dark">
-           <h2 class="text-light">
+           <h2 class="text-light">      <!-- Header in the top left of the screen -->
               dgsCAPTCHA
            </h2>
         </div>
 
         <div class="row">
-            <h3 class="d-flex justify-content-center">dgsCAPTCHA GRID:</h3>
+            <h3 class="d-flex justify-content-center">dgsCAPTCHA GRID:</h3>     <!-- Header right above table -->
         </div>
 
-        <table class="table table-bordered d-flex justify-content-center" style="height: 100%; width: 100%; object-fit: contain;" border="1">
+        <table class="table table-bordered d-flex justify-content-center" style="height: 100%; width: 100%; object-fit: contain;" border="1">   <!-- Creation of the CAPTCHA table -->
             <tbody>
             <tr>
                 <td class="p-2 bd-highlight" align="center">
-                    <button type="button" style="width: 128px; height: 128px;" onclick="toggleBg(this,'yellow')">
+                    <button id="b1" type="button" style="width: 128px; height: 128px;" onclick="toggleBg(this,'yellow')">       <!-- Creation of the first button on the table -->
                         <img style= "height: 100%; width: 100%; object-fit: contain;"
-                        src="{{ url_for('static', filename='NineImageTest/' + selected_images[0]) }}" alt="Captcha Image" />
+                        src="{{ url_for('static', filename='NineImageTest/' + selected_images[0]) }}" alt="Captcha Image" />    <!-- Take selected image from desired folder to put into button -->
                     </button>
                 </td>
                 <td class="p-2 bd-highlight" align="center">
-                        <button type="button" style="width: 128px; height: 128px;" onclick="toggleBg(this,'yellow')">
-                            <img style= "height: 100%; width: 100%; object-fit: contain;"
-                            src="{{ url_for('static', filename='NineImageTest/' + selected_images[1]) }}" alt="Captcha Image" />
-                        </button>
-                    </td>
+                    <button id="b2" type="button" style="width: 128px; height: 128px;" onclick="toggleBg(this,'yellow')">       <!-- Creation of the second button on the table -->
+                        <img style= "height: 100%; width: 100%; object-fit: contain;"
+                        src="{{ url_for('static', filename='NineImageTest/' + selected_images[1]) }}" alt="Captcha Image" />    <!-- Take selected image from desired folder to put into button -->
+                    </button>
+                </td>
                 <td class="p-2 bd-highlight" align="center">
-                        <button type="button" style="width: 128px; height: 128px;" onclick="toggleBg(this,'yellow')">
-                            <img style= "height: 100%; width: 100%; object-fit: contain;"
-                            src="{{ url_for('static', filename='NineImageTest/' + selected_images[2]) }}" alt="Captcha Image" />
-                        </button>
-                    </td>
+                    <button id="b3" type="button" style="width: 128px; height: 128px;" onclick="toggleBg(this,'yellow')">       <!-- Creation of the third button on the table -->
+                        <img style= "height: 100%; width: 100%; object-fit: contain;"
+                        src="{{ url_for('static', filename='NineImageTest/' + selected_images[2]) }}" alt="Captcha Image" />    <!-- Take selected image from desired folder to put into button -->
+                    </button>
+                </td>
             </tr>
             <tr>
                 <td class="p-2 bd-highlight" align="center">
-                    <button type="button" style="width: 128px; height: 128px;" onclick="toggleBg(this,'yellow')">
+                    <button id="b4" type="button" style="width: 128px; height: 128px;" onclick="toggleBg(this,'yellow')">       <!-- Creation of the fourth button on the table -->
                         <img style= "height: 100%; width: 100%; object-fit: contain;"
-                        src="{{ url_for('static', filename='NineImageTest/' + selected_images[3]) }}" alt="Captcha Image" />
+                        src="{{ url_for('static', filename='NineImageTest/' + selected_images[3]) }}" alt="Captcha Image" />    <!-- Take selected image from desired folder to put into button -->
                     </button>
                 </td>
                 <td class="p-2 bd-highlight" align="center">
-                        <button type="button" style="width: 128px; height: 128px;" onclick="toggleBg(this,'yellow')">
-                            <img style= "height: 100%; width: 100%; object-fit: contain;"
-                            src="{{ url_for('static', filename='NineImageTest/' + selected_images[4]) }}" alt="Captcha Image" />
-                        </button>
-                    </td>
+                    <button id="b5" type="button" style="width: 128px; height: 128px;" onclick="toggleBg(this,'yellow')">       <!-- Creation of the fifth button on the table -->
+                        <img style= "height: 100%; width: 100%; object-fit: contain;"
+                        src="{{ url_for('static', filename='NineImageTest/' + selected_images[4]) }}" alt="Captcha Image" />    <!-- Take selected image from desired folder to put into button -->
+                    </button>
+                </td>
                 <td class="p-2 bd-highlight" align="center">
-                        <button type="button" style="width: 128px; height: 128px;" onclick="toggleBg(this,'yellow')">
-                            <img style= "height: 100%; width: 100%; object-fit: contain;"
-                            src="{{ url_for('static', filename='NineImageTest/' + selected_images[5]) }}" alt="Captcha Image" />
-                        </button>
-                    </td>
+                    <button id="b6" type="button" style="width: 128px; height: 128px;" onclick="toggleBg(this,'yellow')">       <!-- Creation of the sixth button on the table -->
+                        <img style= "height: 100%; width: 100%; object-fit: contain;"
+                        src="{{ url_for('static', filename='NineImageTest/' + selected_images[5]) }}" alt="Captcha Image" />    <!-- Take selected image from desired folder to put into button -->
+                    </button>
+                </td>
             </tr>
              <tr>
                 <td class="p-2 bd-highlight" align="center">
-                    <button type="button" style="width: 128px; height: 128px;" onclick="toggleBg(this,'yellow')">
+                    <button id="b7" type="button" style="width: 128px; height: 128px;" onclick="toggleBg(this,'yellow')">       <!-- Creation of the seventh button on the table -->
                         <img style= "height: 100%; width: 100%; object-fit: contain;"
-                        src="{{ url_for('static', filename='NineImageTest/' + selected_images[6]) }}" alt="Captcha Image" />
+                        src="{{ url_for('static', filename='NineImageTest/' + selected_images[6]) }}" alt="Captcha Image" />    <!-- Take selected image from desired folder to put into button -->
                     </button>
                 </td>
                 <td class="p-2 bd-highlight" align="center">
-                        <button type="button" style="width: 128px; height: 128px;" onclick="toggleBg(this,'yellow')">
-                            <img style= "height: 100%; width: 100%; object-fit: contain;"
-                            src="{{ url_for('static', filename='NineImageTest/' + selected_images[7]) }}" alt="Captcha Image" />
-                        </button>
-                    </td>
+                    <button id="b8" type="button" style="width: 128px; height: 128px;" onclick="toggleBg(this,'yellow')">       <!-- Creation of the eighth button on the table -->
+                        <img style= "height: 100%; width: 100%; object-fit: contain;"
+                        src="{{ url_for('static', filename='NineImageTest/' + selected_images[7]) }}" alt="Captcha Image" />    <!-- Take selected image from desired folder to put into button -->
+                    </button>
+                </td>
                 <td class="p-2 bd-highlight" align="center">
-                        <button type="button" style="width: 128px; height: 128px;" onclick="toggleBg(this,'yellow')">
-                            <img style= "height: 100%; width: 100%; object-fit: contain;"
-                            src="{{ url_for('static', filename='NineImageTest/' + selected_images[8]) }}" alt="Captcha Image" />
-                        </button>
-                    </td>
+                    <button id="b9" type="button" style="width: 128px; height: 128px;" onclick="toggleBg(this,'yellow')">       <!-- Creation of the ninth button on the table -->
+                        <img style= "height: 100%; width: 100%; object-fit: contain;"
+                        src="{{ url_for('static', filename='NineImageTest/' + selected_images[8]) }}" alt="Captcha Image" />    <!-- Take selected image from desired folder to put into button -->
+                    </button>
+                </td>
             </tr>
             </tbody>
         </table>
-        <button style="margin-left: 48%;" onclick="toggleCheck()">Check</button>
-        <textarea id="ta1"></textarea>
+        <button style="margin-left: 48%;" onclick="toggleCheck()">Check</button> <!-- Button to check user input against out wanted inputs -->
+        <p id="op1"></p>    <!-- This is for outputting toggleCheck test values -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     </body>
 </html>

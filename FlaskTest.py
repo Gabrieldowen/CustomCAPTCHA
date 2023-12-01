@@ -16,7 +16,7 @@ if __name__ =='__main__':
 
 @app.route('/')
 def home():
-    #return render_template("index.html")
+    #return render_template("index.html")   
     captcha_code, selected_images, correct_index = generate_captcha()
     if not captcha_code:
         return 'Not enough captcha images found.'
