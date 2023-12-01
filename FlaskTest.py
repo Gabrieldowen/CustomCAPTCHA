@@ -9,6 +9,32 @@
 import os
 import random
 
+solution = []
+
+# Select the two objects that will be used in the CAPTCHA
+def select_objects():
+    obj1 = random.randint(0,3)  # Select random int
+    obj2 = obj1
+    while obj2 == obj1: # Loop until obj1 != obj2
+        obj2 = random.randint(0,3)
+    # Return the values such that it is in ascending order
+    if obj1 < obj2:
+        return [obj1, obj2]
+    return [obj2, obj1]
+
+def generate_captcha():
+    image_files = [f for f in os.listdir('static/NineImageTest') if f.endswith('.png')]
+    if len(image_files) < 9:
+        return None
+
+    selected_images = random.sample(image_files, 9)
+    correct_index = random.randint(0, 8)
+    correct_image = selected_images[correct_index]
+    code = os.path.splitext(correct_image)[0]
+    return code, selected_images, correct_index
+
+# Flask stuff
+
 from flask import Flask, render_template
 app = Flask(__name__)
 if __name__ =='__main__':
@@ -29,14 +55,3 @@ def validate():
     # Your validation logic here
     print("validating")
     pass
-
-def generate_captcha():
-    image_files = [f for f in os.listdir('static/NineImageTest') if f.endswith('.png')]
-    if len(image_files) < 9:
-        return None
-
-    selected_images = random.sample(image_files, 9)
-    correct_index = random.randint(0, 8)
-    correct_image = selected_images[correct_index]
-    code = os.path.splitext(correct_image)[0]
-    return code, selected_images, correct_index
