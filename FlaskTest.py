@@ -24,6 +24,7 @@ def select_objects():
     # Return the values such that it is in ascending order
     if obj1 < obj2:
         return [obj1, obj2]
+
     return [obj2, obj1]
 
 
@@ -36,14 +37,28 @@ def select_clues():
     single_imgs2 = [f for f in os.listdir(clue2_dir) if f.endswith('.png')] # Get all images in clue2_dir
     clues.append(f'images/single/{objs[0]}/{single_imgs1[random.randint(0, len(single_imgs1))]}')    # Get random clue 1
     clues.append(f'images/single/{objs[1]}/{single_imgs2[random.randint(0, len(single_imgs2))]}')    # Get random clue 2
+    return generate_captcha(objs)
 
 
-def generate_captcha():
-    image_files = [f for f in os.listdir('static/NineImageTest') if f.endswith('.png')]
+
+def generate_captcha(objs):
+
+    options = [0, 1, 2, 3]
+    options.remove(objs[0])
+    options.remove(objs[1])
+
+    pathFolder = ''.join(sorted(f'{objs[1]}' + f'{objs[0]}' + f'{random.choice(options)}'))
+
+    image_files = [f for f in os.listdir(f"static/images/multi/{pathFolder}/") if f.endswith('.png')]
+
+    print(pathFolder)
+
     if len(image_files) < 9:
         return None
 
-    selected_images = random.sample(image_files, 9)
+    selected_images = [f"images/multi/{pathFolder}/" + s for s in random.sample(image_files, 9)]
+
+    print(selected_images)
     correct_index = random.randint(0, 8)
     correct_image = selected_images[correct_index]
     code = os.path.splitext(correct_image)[0]
@@ -62,7 +77,7 @@ if __name__ =='__main__':
 @app.route('/')
 def home():
     # return render_template("index.html")
-    captcha_code, selected_images, correct_index = generate_captcha()
+    captcha_code, selected_images, correct_index = select_clues()
     if not captcha_code:
         return 'Not enough captcha images found.'
 
@@ -75,5 +90,5 @@ def validate():
     # Your validation logic here
     print(request.form)
     print("validating")
-    
+
     return redirect(url_for('home'))
