@@ -8,6 +8,7 @@
 
 import os
 import random
+from time import sleep
 from unittest import result
 from PIL import Image
 
@@ -120,20 +121,25 @@ if __name__ =='__main__':
 @app.route('/')
 def home():
     # return render_template("index.html")
-    captcha_code, selected_images, correct_index = generate_captcha(objs)
-    if not captcha_code:
-        return 'Not enough captcha images found.'
+    # captcha_code, selected_images, correct_index = generate_captcha(objs)
+    # if not captcha_code:
+        # return 'Not enough captcha images found.'
 
-    return render_template('index.html', captcha_code=captcha_code, selected_images=selected_images,
-                           correct_index=correct_index)
+    return render_template('index.html', selected_images=select_images(objs, clues))
 
 
 @app.route('/validate', methods=['POST'])
 def validate():
     # Your validation logic here
-    print(request.form)
-    print("validating")
-    return redirect(url_for('home'))
+    Submission = request.form.get('selectedButtons', '[]')
+    AnswerKey = '["0","0","0","0","0","0","0","0","0"]'
+
+    if Submission == AnswerKey:
+        print("correct")
+    else:
+        print("Wrong")
+
+    return render_template('success.html')
 
 # TEST CODE
 objs = select_objects()
