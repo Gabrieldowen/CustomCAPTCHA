@@ -43,26 +43,27 @@ def select_clues():
 
 def generate_captcha(objs):
 
-    options = [0, 1, 2, 3]
-    options.remove(objs[0])
-    options.remove(objs[1])
+    CorrectOptions = [0, 1, 2, 3]
+    CorrectOptions.remove(objs[0])
+    CorrectOptions.remove(objs[1])
 
-    pathFolder = ''.join(sorted(f'{objs[1]}' + f'{objs[0]}' + f'{random.choice(options)}'))
+    pathFolder = ''.join(sorted(f'{objs[1]}' + f'{objs[0]}' + f'{random.choice(CorrectOptions)}'))
 
-    image_files = [f for f in os.listdir(f"static/images/multi/{pathFolder}/") if f.endswith('.png')]
+    CorrectImages = [f for f in os.listdir(f"static/images/multi/{pathFolder}/") if f.endswith('.png')]
 
     print(pathFolder)
 
-    if len(image_files) < 9:
+    if len(CorrectImages) < 9:
         return None
 
-    selected_images = [f"images/multi/{pathFolder}/" + s for s in random.sample(image_files, 9)]
+    
+    CaptchaImages = [f"images/multi/{pathFolder}/" + s for s in random.sample(CorrectImages, 9)]
 
-    print(selected_images)
+    print(CaptchaImages)
     correct_index = random.randint(0, 8)
-    correct_image = selected_images[correct_index]
+    correct_image = CaptchaImages[correct_index]
     code = os.path.splitext(correct_image)[0]
-    return code, selected_images, correct_index
+    return code, CaptchaImages, correct_index
 
 # Flask stuff
 
