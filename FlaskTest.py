@@ -179,22 +179,19 @@ def home():
 def validate():
     # Your validation logic here
     Submission = request.form.get('selectedButtons', '[]')
-    AnswerKey = ["0","0","0","0","0","0","0","0","0"]
+    Submission = Submission.replace('"', '').replace("'", '').replace(",", '').replace("[", '').replace("]", '')
 
+    # Formats the answer key to style of submission
+    AnswerKey = ""
     for index, item in enumerate(idx):
         if item in key:
-            AnswerKey[index] = "1"
+            AnswerKey += '1'
+        else:
+            AnswerKey += '0'
 
-
-    AnswerKey = ['"{}"'.format(item) for item in AnswerKey]
-    AnswerKey = '[' + ','.join(AnswerKey) + ']'
-
-    print(f"{Submission} == {AnswerKey}")
-    if Submission == f'{AnswerKey}':
-        print("correct")
+    # checks if submission == key
+    if Submission == AnswerKey:
         return render_template('success.html')
-    else:
-        print("Wrong")
 
     return redirect(url_for('home'))
 
