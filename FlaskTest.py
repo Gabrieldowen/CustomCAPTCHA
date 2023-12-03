@@ -12,8 +12,10 @@ from time import sleep
 from unittest import result
 from PIL import Image
 import numpy as np
+import cv2
 
 
+dim = 450   # The dimensions of the large image
 
 # Select the two objects that will be used in the CAPTCHA
 def select_objects():
@@ -91,6 +93,7 @@ def scramble_images():
     return idx
 # End scramble_images
 
+# Combine smaller, individual images into one larger one
 def combine_images(images, idx):
     rows = []   # Rows of combines images
 
@@ -111,8 +114,18 @@ def combine_images(images, idx):
     full_img.paste(rows[1], (0, rows[0].size[1]))
     full_img.paste(rows[2], (0, 2*rows[0].size[1]))
 
-    return full_img.resize((450,450))   # Resize the image to 450px x 450px and return
+    return full_img.resize((dim,dim))   # Resize the image to dim px x dim px and return
 # End combine_images
+
+# Add noise to image
+def add_noise(image):
+    img = np.array(image)   # Convert image to an array
+    uniform_noise = np.zeros((dim, dim, 3), dtype=np.uint8) # Create an array of zeros of the same dimensions as 'img'
+    cv2.randu(uniform_noise, 0, 255)    # Create random uniform noise in 'uniform_noise'
+    uniform_noise = (uniform_noise*0.7).astype(np.uint8)    # Reduce amount of noise
+    un_img = cv2.add(img, uniform_noise)    # Add noise to 'img' array
+    return Image.fromarray(un_img)  # Return array as image
+# End add_noise
 
 def generate_captcha(objs):
 
@@ -180,5 +193,6 @@ print(images, idx)
 
 
 test = combine_images(images, idx)
+test = add_noise(test)
 
 test.show()
