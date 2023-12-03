@@ -11,6 +11,7 @@ import random
 from time import sleep
 from unittest import result
 from PIL import Image
+import numpy as np
 
 
 
@@ -82,8 +83,16 @@ def select_images(objs, clues):
             if inc_imgs2[rand] not in incorrect:
                 incorrect.append(f'{prefix}/{incorrect_dirs[1]}/{inc_imgs2[rand]}')
 
-    return correct + incorrect
+    return [correct + incorrect, list(np.arange(0,num_correct))]    # Return the list of all images, as well as a list of the indices of correct images
 # End select_images
+
+def scramble_images():
+    idx = list(np.arange(0,9))  # Make a list 0..8 that marks the indices of the images in the images list
+    np.random.shuffle(idx)  # Shuffle the indices of this indices list
+    # i.e. If the shuffled list is [1, 6, 8, 0, 5, 4, 7, 2, 3], then the image at index 0 in the images list will be at index 3 in the CAPTCHA
+    # because 0 is at index 3. Further, the image at index 1 in the images list will be at index 0 in the CAPTCHA
+    return idx
+# End scramble_images
 
 def generate_captcha(objs):
 
@@ -146,5 +155,4 @@ objs = select_objects()
 clues = select_clues(objs)
 print(select_images(objs, clues))
 
-
-   
+print(scramble_images())
