@@ -188,7 +188,7 @@ def home():
     grid_img.save(data, 'PNG')  # Save to memory buffer as png
     encoded_img = base64.b64encode(data.getvalue()) # Encode to base-64
 
-    return render_template('test.html', img_data=encoded_img.decode('utf-8'))   # Send image to html as utf-8
+    return render_template('index.html', img_data=encoded_img.decode('utf-8'))   # Send image to html as utf-8
 
 
 
