@@ -59,10 +59,10 @@
     <body>
         <script>    //Start of JavaScript code
             function toggleBg(element, color) {                     //Function to tell if a button has been clicked
-              if(element.style.backgroundColor == color) {          //If statement to deselect button if already selected
-                color = element.dataset.normalColor;
+              if(element.style.backgroundColor === `rgba(255, 255, 0, 0.5)`) {          //If statement to deselect button if already selected
+                color = ``;
               } else {                                              //Else statement to select color if not already selected
-                element.dataset.normalColor = element.style.backgroundColor;
+                color = `rgba(255, 255, 0, 0.5)`;
               }
           
               element.style.backgroundColor = color;                //Assign new value to color at the end to allow for re-use
@@ -71,7 +71,7 @@
                 const buttonsSelected = Array(9).fill('0');         //Array to tell which buttons are selected
 
                 for(var i = 0; i < buttonsSelected.length; i++){    //Loop to tell which buttons are selected
-                    if(document.getElementById("b" + [i + 1]).style.backgroundColor == 'yellow'){   //If button is selected (yellow in color),
+                    if(document.getElementById("b" + [i + 1]).style.backgroundColor == `rgba(255, 255, 0, 0.5)`){   //If button is selected (yellow in color),
                         buttonsSelected[i] = '1';                                                   //change array value to one
                     }
                     else{                                           //If button is not clicked or unclicked, change array value to zero
@@ -83,15 +83,6 @@
 
                 // this line assigns the selected buttons array to the form that is submitted to controller
                 document.getElementById("selectedButtons").value = JSON.stringify(buttonsSelected);
-
-                /* For testing individual buttons (b1 - b9)
-                if(document.getElementById("b1").style.backgroundColor == 'yellow'){
-                    buttonsSelected[8] = "1";
-                }
-                else {
-                    buttonsSelected[8] = "0";
-                }
-                */
             }
           </script>
         <div class="page-header bg-dark">
