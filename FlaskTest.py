@@ -39,18 +39,18 @@ def select_clues(objs):
     clues.append(f'images/single/{objs[0]}/{single_imgs1[random.randint(0, len(single_imgs1) - 1)]}')    # Get random clue 1
     clues.append(f'images/single/{objs[1]}/{single_imgs2[random.randint(0, len(single_imgs2) - 1)]}')    # Get random clue 2
     return clues
-
+# End select_clues
 
 def select_images(objs, clues):
-    prefix = "images/multi" # Prefix for directory
-    all_dirs = os.listdir(f'static/{prefix}')   # Get all directories in 'static/images/multi/'
+    prefix = "static/images/multi" # Prefix for directory
+    all_dirs = os.listdir(prefix)   # Get all directories in 'static/images/multi/'
 
     # Get the correct images
 
     correct_dirs = [x for x in all_dirs if str(objs[0]) in x and str(objs[1]) in x] # Get the directories containing the correct images
     correct = []    # List of correct images
-    imgs1 = [f for f in os.listdir(f'static/{prefix}/{correct_dirs[0]}') if f.endswith('.png')]
-    imgs2 = [f for f in os.listdir(f'static/{prefix}/{correct_dirs[1]}') if f.endswith('.png')]
+    imgs1 = [f for f in os.listdir(f'{prefix}/{correct_dirs[0]}') if f.endswith('.png')]
+    imgs2 = [f for f in os.listdir(f'{prefix}/{correct_dirs[1]}') if f.endswith('.png')]
     num_correct = random.randint(3,6)   # Select a random number of correct images from both directories (between 3 and 6 images)
 
     for i in range(num_correct):
@@ -68,24 +68,25 @@ def select_images(objs, clues):
 
     incorrect_dirs = [x for x in all_dirs if x not in correct_dirs] # Get the directories for incorrect images
     incorrect = []  # List of incorrect images
-    inc_imgs1 = [f for f in os.listdir(f'static/{prefix}/{incorrect_dirs[0]}') if f.endswith('.png')]
-    inc_imgs2 = [f for f in os.listdir(f'static/{prefix}/{incorrect_dirs[1]}') if f.endswith('.png')]
+    inc_imgs1 = [f for f in os.listdir(f'{prefix}/{incorrect_dirs[0]}') if f.endswith('.png')]
+    inc_imgs2 = [f for f in os.listdir(f'{prefix}/{incorrect_dirs[1]}') if f.endswith('.png')]
     num_incorrect = 9 - num_correct # Select the remaining images as incorrect
 
     for i in range(num_incorrect):
         choice = random.randint(0,1)    # Choose which image list to choose from
         if choice == 0:
             rand = random.randint(0, len(inc_imgs1) - 1)
-            if inc_imgs1[rand] not in incorrect:
+            if inc_imgs1[rand] not in incorrect:    # Only add if not already selected
                 incorrect.append(f'{prefix}/{incorrect_dirs[0]}/{inc_imgs1[rand]}')
         else:
             rand = random.randint(0, len(inc_imgs2) - 1)
-            if inc_imgs2[rand] not in incorrect:
+            if inc_imgs2[rand] not in incorrect:    # Only add if not already selected
                 incorrect.append(f'{prefix}/{incorrect_dirs[1]}/{inc_imgs2[rand]}')
 
     return [correct + incorrect, list(np.arange(0,num_correct))]    # Return the list of all images, as well as a list of the indices of correct images
 # End select_images
 
+# Create a random order for the images to appear in the CAPTCHA
 def scramble_images():
     idx = list(np.arange(0,9))  # Make a list 0..8 that marks the indices of the images in the images list
     np.random.shuffle(idx)  # Shuffle the indices of this indices list
@@ -93,6 +94,29 @@ def scramble_images():
     # because 0 is at index 3. Further, the image at index 1 in the images list will be at index 0 in the CAPTCHA
     return idx
 # End scramble_images
+
+def combine_images(images, idx):
+    rows = []   # Rows of combines images
+
+    # Create combine images into rows that will be combined into one full image
+    for m in range(0,3):
+        imgs = []   # Images open for this row
+        for i in range(0+(m*3), 3+(m*3)):
+            imgs.append(Image.open(images[idx[i]]))
+        new_img = Image.new('RGB', (3*imgs[0].size[0], imgs[0].size[1]), (250, 250, 250))   # Create a new image with 3 * width of smaller image
+        new_img.paste(imgs[0], (0,0))
+        new_img.paste(imgs[1], (imgs[0].size[0], 0))
+        new_img.paste(imgs[2], (2*imgs[0].size[0], 0))
+        rows.append(new_img)
+
+    # Combine rows together veritcally to create a square image containing all 9 small images
+    full_img = Image.new('RGB', (rows[0].size[0], 3*rows[0].size[1]), (250, 250, 250))  # Create square image with dimmensions 3*image width x 3*image height
+    full_img.paste(rows[0], (0,0))
+    full_img.paste(rows[1], (0, rows[0].size[1]))
+    full_img.paste(rows[2], (0, 2*rows[0].size[1]))
+
+    return full_img.resize((450,450))   # Resize the image to 450px x 450px and return
+# End combine_images
 
 def generate_captcha(objs):
 
@@ -153,6 +177,12 @@ def validate():
 # TEST CODE
 objs = select_objects()
 clues = select_clues(objs)
-print(select_images(objs, clues))
+images, correct = select_images(objs, clues)
+idx = scramble_images()
+print(images, idx)
 
-print(scramble_images())
+"""
+test = combine_images(images, idx)
+
+test.show()
+"""
