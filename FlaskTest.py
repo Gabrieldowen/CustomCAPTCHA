@@ -155,6 +155,7 @@ def home():
 def home():
     # Get the images for the CAPTCHA
     global key
+    global idx
     objs = select_objects()
     clues = select_clues(objs)
     images, key = select_images(objs, clues)
@@ -167,6 +168,7 @@ def home():
     grid_img.save(data, 'PNG')  # Save to memory buffer as png
     encoded_img = base64.b64encode(data.getvalue()) # Encode to base-64
 
+    print(idx)
     print(key)
     return render_template('index.html', img_data=encoded_img.decode('utf-8'), clues=clues)   # Send image to html as utf-8
 
@@ -179,8 +181,10 @@ def validate():
     Submission = request.form.get('selectedButtons', '[]')
     AnswerKey = ["0","0","0","0","0","0","0","0","0"]
 
-    for n in key:
-        AnswerKey[n] = "1"
+    for index, item in enumerate(idx):
+        if item in key:
+            AnswerKey[index] = "1"
+
 
     AnswerKey = ['"{}"'.format(item) for item in AnswerKey]
     AnswerKey = '[' + ','.join(AnswerKey) + ']'
