@@ -13,6 +13,9 @@ from unittest import result
 from PIL import Image
 import numpy as np
 import cv2
+import base64
+import io
+from flask import Flask, render_template, request, url_for, redirect
 
 
 dim = 450   # The dimensions of the large image
@@ -122,8 +125,9 @@ def add_noise(image):
     img = np.array(image)   # Convert image to an array
     uniform_noise = np.zeros((dim, dim, 3), dtype=np.uint8) # Create an array of zeros of the same dimensions as 'img'
     cv2.randu(uniform_noise, 0, 255)    # Create random uniform noise in 'uniform_noise'
-    uniform_noise = (uniform_noise*0.7).astype(np.uint8)    # Reduce amount of noise
+    uniform_noise = (uniform_noise*0.75).astype(np.uint8)    # Reduce amount of noise
     un_img = cv2.add(img, uniform_noise)    # Add noise to 'img' array
+
     return Image.fromarray(un_img)  # Return array as image
 # End add_noise
 
@@ -152,14 +156,11 @@ def generate_captcha(objs):
 
 # Flask stuff
 
-
-from flask import Flask, render_template, request, url_for, redirect
-
 app = Flask(__name__)
 if __name__ =='__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')
 
-
+"""
 @app.route('/')
 def home():
     # return render_template("index.html")
@@ -167,7 +168,29 @@ def home():
     # if not captcha_code:
         # return 'Not enough captcha images found.'
 
+    objs = select_objects()
+    clues = select_clues(objs)
     return render_template('index.html', selected_images=select_images(objs, clues))
+"""
+
+@app.route('/')
+def home():
+    # Get the images for the CAPTCHA
+    objs = select_objects()
+    clues = select_clues(objs)
+    images, key = select_images(objs, clues)
+    idx = scramble_images()
+
+    grid_img = combine_images(images, idx)  # Combine the images into one
+    grid_img = add_noise(grid_img)  # Add noise
+
+    data = io.BytesIO()    # Buffer to save openned image 'grid_img' in memory
+    grid_img.save(data, 'PNG')  # Save to memory buffer as png
+    encoded_img = base64.b64encode(data.getvalue()) # Encode to base-64
+
+    return render_template('test.html', img_data=encoded_img.decode('utf-8'))   # Send image to html as utf-8
+
+
 
 
 @app.route('/validate', methods=['POST'])
@@ -185,6 +208,7 @@ def validate():
 
 
 # TEST CODE
+"""
 objs = select_objects()
 clues = select_clues(objs)
 images, correct = select_images(objs, clues)
@@ -196,3 +220,4 @@ test = combine_images(images, idx)
 test = add_noise(test)
 
 test.show()
+"""

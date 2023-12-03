@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CS-4173 project dgsCAPTCHA</title>\
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<body>
+    <!-- 
+    <script>    //Start of JavaScript code
+        function toggleBg(element, color) {                     //Function to tell if a button has been clicked
+          if(element.style.backgroundColor == color) {          //If statement to deselect button if already selected
+            color = element.dataset.normalColor;
+          } else {                                              //Else statement to select color if not already selected
+            element.dataset.normalColor = element.style.backgroundColor;
+          }
+      
+          element.style.backgroundColor = color;                //Assign new value to color at the end to allow for re-use
+        }
+        function toggleCheck() {
+            const buttonsSelected = Array(9).fill("0");         //Array to tell which buttons are selected
+
+            for(var i = 0; i < buttonsSelected.length; i++){    //Loop to tell which buttons are selected
+                if(document.getElementById("b" + [i + 1]).style.backgroundColor == 'yellow'){   //If button is selected (yellow in color),
+                    buttonsSelected[i] = "1";                                                   //change array value to one
+                }
+                else{                                           //If button is not clicked or unclicked, change array value to zero
+                    buttonsSelected[i] = "0";
+                }
+            }
+            
+            document.getElementById("op1").innerHTML = "Selected Values: " + buttonsSelected;   //Output which buttons are selected
+
+            // this line assigns the selected buttons array to the form that is submitted to controller
+            document.getElementById("selectedButtons").value = JSON.stringify(buttonsSelected);
+
+            /* For testing individual buttons (b1 - b9)
+            if(document.getElementById("b1").style.backgroundColor == 'yellow'){
+                buttonsSelected[8] = "1";
+            }
+            else {
+                buttonsSelected[8] = "0";
+            }
+            */
+        }
+    </script>
+    <style>
+        .my-class{
+            gap: 0px;
+        }
+    </style>
+    <table class="table d-flex my-class" style="border-collapse: collapse; padding: 0; gap: 0; z-index: 2;">
+        <tr>
+            <td class="p-2 bd-highlight" align="center">
+                <button id="b1" type="button" style="width:150px; height: 150px; background-color: transparent;" onclick="toggleBg(this, 'yellow')">
+                </button>
+            </td>
+            <td class="p-2 bd-highlight" align="center">
+                <button id="b2" type="button" style="width:150px; height: 150px; background-color: transparent;" onclick="toggleBg(this, 'yellow')">
+                </button>
+            </td>
+            <td class="p-2 bd-highlight" align="center">
+                <button id="b3" type="button" style="width:150px; height: 150px; background-color: transparent;" onclick="toggleBg(this, 'yellow')">
+                </button>
+            </td>
+        </tr>
+        <tr>
+            <td class="p-2 bd-highlight" align="center">
+                <button id="b4" type="button" style="width:150px; height: 150px; background-color: transparent;" onclick="toggleBg(this, 'yellow')">
+                </button>
+            </td>
+            <td class="p-2 bd-highlight" align="center">
+                <button id="b5" type="button" style="width:150px; height: 150px; background-color: transparent;" onclick="toggleBg(this, 'yellow')">
+                </button>
+            </td>
+            <td class="p-2 bd-highlight" align="center">
+                <button id="b6" type="button" style="width:150px; height: 150px; background-color: transparent;" onclick="toggleBg(this, 'yellow')">
+                </button>
+            </td>
+        </tr>
+        <tr>
+            <td class="p-2 bd-highlight" align="center">
+                <button id="b7" type="button" style="width:150px; height: 150px; background-color: transparent;" onclick="toggleBg(this, 'yellow')">
+                </button>
+            </td>
+            <td class="p-2 bd-highlight" align="center">
+                <button id="b8" type="button" style="width:150px; height: 150px; background-color: transparent;" onclick="toggleBg(this, 'yellow')">
+                </button>
+            </td>
+            <td class="p-2 bd-highlight" align="center">
+                <button id="b9" type="button" style="width:150px; height: 150px; background-color: transparent;" onclick="toggleBg(this, 'yellow')">
+                </button>
+            </td>
+        </tr>
+    </table>
+-->
+<!-- Display image -->
+    <div style="z-index: 1;">
+        <img id="picture" src="data:image/png;base64,{{ img_data }}">
+    </div>
+</body>
+</html>
