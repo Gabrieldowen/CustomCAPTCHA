@@ -48,42 +48,38 @@ def select_images(objs, clues):
     # Get the correct images
 
     correct_dirs = [x for x in all_dirs if str(objs[0]) in x and str(objs[1]) in x] # Get the directories containing the correct images
-    correct = []    # List of correct images
+    correct = set()    # Set of correct images (only unique images)
     imgs1 = [f for f in os.listdir(f'{prefix}/{correct_dirs[0]}') if f.endswith('.png')]
     imgs2 = [f for f in os.listdir(f'{prefix}/{correct_dirs[1]}') if f.endswith('.png')]
     num_correct = random.randint(3,6)   # Select a random number of correct images from both directories (between 3 and 6 images)
 
-    for i in range(num_correct):
+    while len(correct) < num_correct:
         choice = random.randint(0,1)    # Choose which image list to choose from
         if choice == 0:
             rand = random.randint(0, len(imgs1) - 1)    # Random index
-            if imgs1[rand] not in correct:  # Only add if it's not already selected
-                correct.append(f'{prefix}/{correct_dirs[0]}/{imgs1[rand]}')
+            correct.add(f'{prefix}/{correct_dirs[0]}/{imgs1[rand]}')    # Add image to correct images set
         else:
             rand = random.randint(0, len(imgs2) - 1)    # Random index
-            if imgs2[rand] not in correct:  # Only add if not already select
-                correct.append(f'{prefix}/{correct_dirs[1]}/{imgs2[rand]}')
+            correct.add(f'{prefix}/{correct_dirs[1]}/{imgs2[rand]}')    # Add image to correct images set
 
     # Get the incorrect images
 
     incorrect_dirs = [x for x in all_dirs if x not in correct_dirs] # Get the directories for incorrect images
-    incorrect = []  # List of incorrect images
+    incorrect = set()  # Set of incorrect images (only unique images)
     inc_imgs1 = [f for f in os.listdir(f'{prefix}/{incorrect_dirs[0]}') if f.endswith('.png')]
     inc_imgs2 = [f for f in os.listdir(f'{prefix}/{incorrect_dirs[1]}') if f.endswith('.png')]
     num_incorrect = 9 - num_correct # Select the remaining images as incorrect
 
-    for i in range(num_incorrect):
+    while len(incorrect) < num_incorrect:
         choice = random.randint(0,1)    # Choose which image list to choose from
         if choice == 0:
             rand = random.randint(0, len(inc_imgs1) - 1)
-            if inc_imgs1[rand] not in incorrect:    # Only add if not already selected
-                incorrect.append(f'{prefix}/{incorrect_dirs[0]}/{inc_imgs1[rand]}')
+            incorrect.add(f'{prefix}/{incorrect_dirs[0]}/{inc_imgs1[rand]}')    # Add image to incorrect images set
         else:
             rand = random.randint(0, len(inc_imgs2) - 1)
-            if inc_imgs2[rand] not in incorrect:    # Only add if not already selected
-                incorrect.append(f'{prefix}/{incorrect_dirs[1]}/{inc_imgs2[rand]}')
+            incorrect.add(f'{prefix}/{incorrect_dirs[1]}/{inc_imgs2[rand]}')    # Add image to incorrect images set
 
-    return [correct + incorrect, list(np.arange(0,num_correct))]    # Return the list of all images, as well as a list of the indices of correct images
+    return [list(correct) + list(incorrect), list(np.arange(0,num_correct))]    # Return the list of all images, as well as a list of the indices of correct images
 # End select_images
 
 # Create a random order for the images to appear in the CAPTCHA
@@ -174,6 +170,7 @@ def validate():
 
     return render_template('success.html')
 
+
 # TEST CODE
 objs = select_objects()
 clues = select_clues(objs)
@@ -181,8 +178,7 @@ images, correct = select_images(objs, clues)
 idx = scramble_images()
 print(images, idx)
 
-"""
+
 test = combine_images(images, idx)
 
 test.show()
-"""
