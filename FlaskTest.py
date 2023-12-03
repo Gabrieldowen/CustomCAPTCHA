@@ -15,7 +15,7 @@ import numpy as np
 import cv2
 import base64
 import io
-from flask import Flask, render_template, request, url_for, redirect
+from flask import Flask, render_template, request, redirect, url_for
 
 
 dim = 450   # The dimensions of the large image
@@ -131,28 +131,6 @@ def add_noise(image):
     return Image.fromarray(un_img)  # Return array as image
 # End add_noise
 
-def generate_captcha(objs):
-
-    CorrectOptions = [0, 1, 2, 3]
-    CorrectOptions.remove(objs[0])
-    CorrectOptions.remove(objs[1])
-
-    pathFolder = ''.join(sorted(f'{objs[1]}' + f'{objs[0]}' + f'{random.choice(CorrectOptions)}'))
-    CorrectImages = [f for f in os.listdir(f"static/images/multi/{pathFolder}/") if f.endswith('.png')]
-
-    print(pathFolder)
-
-    if len(CorrectImages) < 9:
-        return None
-
-    
-    CaptchaImages = [f"images/multi/{pathFolder}/" + s for s in random.sample(CorrectImages, 9)]
-
-    print(CaptchaImages)
-    correct_index = random.randint(0, 8)
-    correct_image = CaptchaImages[correct_index]
-    code = os.path.splitext(correct_image)[0]
-    return code, CaptchaImages, correct_index
 
 # Flask stuff
 
@@ -176,6 +154,7 @@ def home():
 @app.route('/')
 def home():
     # Get the images for the CAPTCHA
+    global key
     objs = select_objects()
     clues = select_clues(objs)
     images, key = select_images(objs, clues)
@@ -188,7 +167,8 @@ def home():
     grid_img.save(data, 'PNG')  # Save to memory buffer as png
     encoded_img = base64.b64encode(data.getvalue()) # Encode to base-64
 
-    return render_template('index.html', img_data=encoded_img.decode('utf-8'))   # Send image to html as utf-8
+    print(key)
+    return render_template('index.html', img_data=encoded_img.decode('utf-8'), clues=clues)   # Send image to html as utf-8
 
 
 
@@ -197,14 +177,23 @@ def home():
 def validate():
     # Your validation logic here
     Submission = request.form.get('selectedButtons', '[]')
-    AnswerKey = '["0","0","0","0","0","0","0","0","0"]'
+    AnswerKey = ["0","0","0","0","0","0","0","0","0"]
 
-    if Submission == AnswerKey:
+    for n in key:
+        AnswerKey[n] = "1"
+
+    AnswerKey = ['"{}"'.format(item) for item in AnswerKey]
+    AnswerKey = '[' + ','.join(AnswerKey) + ']'
+
+    print(f"{Submission} == {AnswerKey}")
+    if Submission == f'{AnswerKey}':
         print("correct")
+        return render_template('success.html')
     else:
         print("Wrong")
 
-    return render_template('success.html')
+    return redirect(url_for('home'))
+
 
 
 # TEST CODE
