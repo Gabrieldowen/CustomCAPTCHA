@@ -68,14 +68,14 @@
               element.style.backgroundColor = color;                //Assign new value to color at the end to allow for re-use
             }
             function toggleCheck() {
-                const buttonsSelected = Array(9).fill("0");         //Array to tell which buttons are selected
+                const buttonsSelected = Array(9).fill('0');         //Array to tell which buttons are selected
 
                 for(var i = 0; i < buttonsSelected.length; i++){    //Loop to tell which buttons are selected
                     if(document.getElementById("b" + [i + 1]).style.backgroundColor == 'yellow'){   //If button is selected (yellow in color),
-                        buttonsSelected[i] = "1";                                                   //change array value to one
+                        buttonsSelected[i] = '1';                                                   //change array value to one
                     }
                     else{                                           //If button is not clicked or unclicked, change array value to zero
-                        buttonsSelected[i] = "0";
+                        buttonsSelected[i] = '0';
                     }
                 }
                 
@@ -102,6 +102,17 @@
 
         <div class="row">
             <h3 class="d-flex justify-content-center">dgsCAPTCHA GRID:</h3>     <!-- Header right above table -->
+        </div>
+
+        <div class="row d-flex justify-content-center">
+            <h3 class="d-flex justify-content-center">Select the images in the grid with these two items</h3>
+                <img style= "height: 20%; width: 20%; object-fit: contain;" src="{{ url_for('static', filename=clues[0]) }}"/>
+                <img style= "height: 20%; width: 20%; object-fit: contain;" src="{{ url_for('static', filename=clues[1]) }}"/>
+
+        </div>
+
+         <div class="row">
+            <h3 class="d-flex justify-content-center"> CHOOSE:</h3>     <!-- Header right above table -->
         </div>
 
         <div class="container d-flex justify-content-center">
