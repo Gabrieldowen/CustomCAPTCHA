@@ -5,7 +5,7 @@ from pathlib import Path
 import sys
 
 # Get the directory with the json files
-DATA_DIR = Path.cwd() / "json_responses"https://urldefense.com/v3/__https://signup.azure.com/studentverification?offerType=1__;!!GNU8KkXDZlD12Q!4NF7nrnMUl3kvIJB_K9du2iuiW75D6fMTaz95rTy4TNro-s3-TSeU3JEO63hjfc5T1hLnjvMQW1PACFWXjujk7uUEn-huurSkB8$
+DATA_DIR = Path.cwd() / "json_responses"
 # Pass the filename at runtime
 JSON_FILE = DATA_DIR / sys.argv[1]
 IMAGE_DIR = Path.cwd() / "images"
