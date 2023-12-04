@@ -124,10 +124,14 @@
 
 
         <form action="validate" method="POST">
-                <input type="hidden" name="selectedButtons" id="selectedButtons" value="">
+            <input type="hidden" name="selectedButtons" id="selectedButtons" value="">
+            <div style="display:none;">
+                <label for="honeypot">Leave this empty:</label>
+                <input type="text" id="honeypot" name="honeypot">
+            </div>
 
-        <button style="margin-left:28%" id="submit" onclick="toggleCheck()">Check</button> <!-- Button to check user input against out wanted inputs -->
-            </form>
+            <button style="margin-left:28%" id="submit" onclick="toggleCheck()">Check</button> <!-- Button to check user input against out wanted inputs -->
+        </form>
         <p id="op1"></p>    <!-- This is for outputting toggleCheck test values -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     </body>

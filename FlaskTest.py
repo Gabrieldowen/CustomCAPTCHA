@@ -5,7 +5,7 @@
 # 2: run this without quotes "export FLASK_APP=FlaskTest.py"
 # 3: "flask run"
 # then paste URL into browser to see it running
-
+import json
 import os
 import random
 from time import sleep
@@ -177,12 +177,19 @@ def home():
 
 @app.route('/validate', methods=['POST'])
 def validate():
+
+    if request.form.get('honeypot'):
+         # It's likely a bot, handle accordingly (e.g., log, block, etc.)
+        print("BOT LIKELY")
+        return redirect(url_for('home'))
+
     # Your validation logic here
     Submission = request.form.get('selectedButtons', '[]')
     Submission = Submission.replace('"', '').replace("'", '').replace(",", '').replace("[", '').replace("]", '')
 
     # Formats the answer key to style of submission
     AnswerKey = ""
+    print(f'idx {idx}')
     for index, item in enumerate(idx):
         if item in key:
             AnswerKey += '1'
@@ -190,12 +197,14 @@ def validate():
             AnswerKey += '0'
 
     # checks if submission == key
+    print(f'sub {Submission}')
+    print(AnswerKey)
     if Submission == AnswerKey:
         return render_template('success.html')
 
     return redirect(url_for('home'))
 
-
+#END VALIDATE()
 
 # TEST CODE
 """
