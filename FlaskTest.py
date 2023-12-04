@@ -141,14 +141,14 @@ if __name__ =='__main__':
 """
 @app.route('/')
 def home():
-    # return render_template("index.html")
+    # return render_template("old_index.html")
     # captcha_code, selected_images, correct_index = generate_captcha(objs)
     # if not captcha_code:
         # return 'Not enough captcha images found.'
 
     objs = select_objects()
     clues = select_clues(objs)
-    return render_template('index.html', selected_images=select_images(objs, clues))
+    return render_template('old_index.html', selected_images=select_images(objs, clues))
 """
 
 @app.route('/')
