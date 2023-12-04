@@ -131,25 +131,22 @@
             cursor: pointer;
             padding: 0px;
         }
-
+        .selected {
+            border: 4px solid #007bff; /* Adjust the border style and color as needed */
+        }
     </style>
   </head>
   <body class="d-flex h-100 text-center text-white bg-secondary">
     <script>    //Start of JavaScript code
-            function toggleBg(element, color) {                     //Function to tell if a button has been clicked
-              if(element.style.backgroundColor === `rgba(255, 255, 0, 0.5)`) {          //If statement to deselect button if already selected
-                color = ``;
-              } else {                                              //Else statement to select color if not already selected
-                color = `rgba(255, 255, 0, 0.5)`;
-              }
-
-              element.style.backgroundColor = color;                //Assign new value to color at the end to allow for re-use
+            function toggleBg(button, color) {
+                // Toggle 'selected' class on the button
+                button.classList.toggle('selected');
             }
             function toggleCheck() {
                 const buttonsSelected = Array(9).fill('0');         //Array to tell which buttons are selected
 
                 for(var i = 0; i < buttonsSelected.length; i++){    //Loop to tell which buttons are selected
-                    if(document.getElementById("b" + [i + 1]).style.backgroundColor == `rgba(255, 255, 0, 0.5)`){   //If button is selected (yellow in color),
+                    if(document.getElementById("b" + [i + 1]).classList.contains('selected')){   //If button is selected (yellow in color),
                         buttonsSelected[i] = '1';                                                   //change array value to one
                     }
                     else{                                           //If button is not clicked or unclicked, change array value to zero
